@@ -164,7 +164,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 * **Théo DUPIN** - *Développeur principal* - https://github.com/thdupin
 
 ## 🤝 Contribuer
-Si vous souhaitez contribuer à ce projet, vous pouvez soumettre une pull request. Assurez-vous que toutes les modifications respectent les directives de codage et passent les tests avant de soumettre.
+Si vous souhaitez contribuer à ce projet, vous pouvez soumettre une pull request. Assurez-vous que toutes les modifications respectent les directives de codage avant de soumettre.
 
 ### 1. Forkez le projet depuis GitHub
 * Allez sur la page du repository sur GitHub (https://github.com/thdupin/KontactHub.git)

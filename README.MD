@@ -94,7 +94,6 @@ php bin/console doctrine:migrations:migrate
 Cette commande exécute les fichiers de migration et initialise les structures nécessaires dans la base de données.
 
 ### 5. Lancez le serveur Symfony
-
 Une fois la base de données créée et configurée, vous devez lancer le serveur Symfony :
 ```bash
 symfony serve
@@ -119,8 +118,8 @@ KontactHub/
 ├── public/
 │   ├── css/
 │   ├── images/
-│   ├── uploads/
-│   │   └── photos/
+│   ├── uploads/                # Ignoré par Git (spécifié dans .gitignore)
+│   │   └── photos/             
 │   └── index.php
 ├── src/
 │   ├── Controller/
@@ -129,23 +128,23 @@ KontactHub/
 │   └── Service/
 ├── templates/
 │   ├── contact/
-│   │    ├── add.html.twig
-│   │    ├── edit.html.twig
-│   │    └── index.html.twig
+│   │   ├── add.html.twig
+│   │   ├── edit.html.twig
+│   │   └── index.html.twig
 │   ├── group/
-│   │    ├── edit.html.twig
-│   │    └── index.html.twig
+│   │   ├── edit.html.twig
+│   │   └── index.html.twig
 │   └── base.html.twig
-├── var/
+├── var/                        # Ignoré par Git(spécifié dans .gitignore)
 │   ├── cache/
 │   ├── log/
 │   └── data.db
-├── vendor/
-├── .env
+├── vendor/                     # Ignoré par Git (spécifié dans .gitignore)
+├── .env                        # Ignoré par Git (spécifié dans .gitignore)
 ├── .env.example
 ├── .gitignore 
 ├── composer.json
-├── composer.lock
+├── composer.lock               # Ignoré par Git (spécifié dans .gitignore)
 ├── README.md
 └── symfony.lock
 ```

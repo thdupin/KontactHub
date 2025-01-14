@@ -142,11 +142,11 @@ KontactHub/
 ├── vendor/                     # Ignoré par Git (spécifié dans .gitignore)
 ├── .env                        # Ignoré par Git (spécifié dans .gitignore)
 ├── .env.example
-├── .gitignore 
-├── composer.json
-├── composer.lock               # Ignoré par Git (spécifié dans .gitignore)
+├── .gitignore
 ├── LICENSE.txt
 ├── README.md
+├── composer.json
+├── composer.lock               # Ignoré par Git (spécifié dans .gitignore)
 └── symfony.lock
 ```
 

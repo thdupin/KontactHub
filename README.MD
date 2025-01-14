@@ -118,9 +118,9 @@ KontactHub/
 ├── migrations/
 ├── public/
 │   ├── css/
-│   ├── images
-│   ├── uploads
-│   │   └── photos
+│   ├── images/
+│   ├── uploads/
+│   │   └── photos/
 │   └── index.php
 ├── src/
 │   ├── Controller/

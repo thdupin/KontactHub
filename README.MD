@@ -145,6 +145,7 @@ KontactHub/
 ├── .gitignore 
 ├── composer.json
 ├── composer.lock               # Ignoré par Git (spécifié dans .gitignore)
+├── LICENSE.txt
 ├── README.md
 └── symfony.lock
 ```

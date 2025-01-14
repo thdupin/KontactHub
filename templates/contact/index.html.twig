@@ -1,0 +1,176 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="d-flex gap-2">
+        <h1>Liste de contacts</h1>
+        <div class="d-flex align-items-center">
+            <!-- Icône d'aide avec tooltip -->
+            <i class="material-icons" 
+                data-bs-toggle="tooltip"
+                data-bs-placement="right"
+                data-bs-html="true"
+                title="<h6>Sélection de plusieurs contacts :</h6><ul><li><strong>Ctrl+Clic</strong> pour sélectionner une ligne individuelle.</li><li><strong>Shift+Clic</strong> pour sélectionner une plage de lignes.</li></ul>">
+                help_outline
+            </i>
+        </div>
+    </div>
+
+    <script id="tooltipContent" type="text/template">
+        <label for="selection-instructions">Sélection de plusieurs contacts :</label>
+        <ul id="selection-instructions">
+            <li><strong>Ctrl+Clic</strong> pour sélectionner une ligne individuelle.</li>
+            <li><strong>Shift+Clic</strong> pour sélectionner une plage de lignes.</li>
+        </ul>
+    </script>
+
+
+    <div class="table-container">
+        <table class="table mt-3"
+            id="table"
+            data-toggle="table"
+            data-show-columns="true"
+            data-multiple-select-row="true"
+            data-click-to-select="true"
+            data-pagination="true"
+            data-search="true"
+            data-url="{{ path('app_contact_data') }}"
+            data-page-size="10"
+            data-page-list="[5, 10, 20, 50, 100]"
+        >
+            <thead>
+                <tr>
+                    <th data-field="state" data-checkbox="true"></th>
+                    <th data-field="id" data-visible="false">ID</th>
+                    <th data-field="photo_name" data-sortable="true">Nom</th>
+                    <th data-field="phone" data-sortable="true">Téléphone</th>
+                    <th data-field="email" data-sortable="true">Email</th>
+                    <th data-field="groups" data-sortable="true">Groupe(s)</th>
+                    {# Colonnes pour les champs personnalisés #}
+                    {% for fieldName in uniqueFields %}
+                        <th data-field="{{ fieldName }}" data-sortable="true">{{ fieldName|capitalize }}</th>
+                    {% endfor %}
+                    <th data-field="actions">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="contact-list">
+                <!-- body récupéré dans la fonction app_contact_data -->
+            </tbody>
+        </table>
+
+        <div class="d-flex align-items-center mt-3" id="selection-container" style="visibility: hidden;">
+            <span class="badge bg-secondary me-2 py-2 px-3" id="selected-count-badge" style="font-size: 0.875rem;">0 sélectionné(s)</span>
+            <button class="btn btn-danger" id="delete-selected" type="button" data-bs-toggle="modal" data-bs-target="#confirmBulkDeleteModal">
+                Supprimer
+            </button>
+            <div class="modal fade" id="confirmBulkDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmBulkDeleteModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmBulkDeleteModalLabel">Confirmation de suppression</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p id="modalMessage">Êtes-vous sûr de vouloir supprimer les éléments sélectionnés ?</p>
+                            <ul id="selectedItemsList"></ul> <!-- Liste des éléments sélectionnés -->
+                        </div>
+                        <div class="modal-footer">
+                            <form action="{{ path('app_contact_bulk_delete') }}" method="post" id="bulkDeleteForm">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="ids" id="selectedIds"> <!-- IDs des éléments sélectionnés -->
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Fonction qui compte le nombre d'éléments sélectionnés dans la table Bootstrap #}
+    <script>
+        $(document).ready(function () {
+            const $table = $('#table');
+            const $selectionContainer = $('#selection-container');
+            const $selectedCountBadge = $('#selected-count-badge');
+
+            // Mettre à jour l'affichage au changement de sélection
+            $table.on('check.bs.table uncheck.bs.table check-all.bs.table uncheck-all.bs.table', function () {
+                const selectedRows = $table.bootstrapTable('getSelections').length;
+
+                // Mettre à jour le badge
+                $selectedCountBadge.text(`${selectedRows} sélectionné(s)`);
+
+                // Afficher ou masquer le conteneur en fonction de la sélection
+                if (selectedRows > 0) {
+                    $selectionContainer.css('visibility', 'visible'); // Affiche le conteneur
+                } else {
+                    $selectionContainer.css('visibility', 'hidden'); // Masque le conteneur
+                }
+            });
+
+            // Action pour supprimer les éléments sélectionnés
+            const $deleteButton = $('#delete-selected'); // Bouton de suppression
+            const $confirmBulkDeleteModal = $('#confirmBulkDeleteModal'); // Modal de confirmation
+            const $selectedIdsInput = $('#selectedIds'); // Input caché pour stocker les IDs sélectionnés
+            const $selectedItemsList = $('#selectedItemsList'); // Liste des éléments sélectionnés dans la modal
+            const $modalMessage = $('#modalMessage'); // Message dans la modal
+
+            // Ouvrir la modal avec la liste des éléments sélectionnés
+            $deleteButton.on('click', function () {
+                const selectedRows = $table.bootstrapTable('getSelections');
+                const selectedIds = selectedRows.map(row => row.id); // Récupérer les IDs
+
+                if (selectedIds.length > 0) {
+                    // Afficher la modal avec les informations des éléments sélectionnés
+                    $modalMessage.text(`Êtes-vous sûr de vouloir supprimer ${selectedIds.length} élément(s) sélectionné(s) ?`);
+
+                    // Mettre à jour les IDs dans le formulaire caché
+                    $selectedIdsInput.val(JSON.stringify(selectedIds)); // Convertir en JSON pour faciliter la récupération côté backend
+
+                    // Afficher la modal
+                    $confirmBulkDeleteModal.modal('show');
+                }
+            });
+
+            // Lorsque le formulaire est soumis, envoyer une requête AJAX pour la suppression
+            $('#bulkDeleteForm').on('submit', function (e) {
+                e.preventDefault(); // Empêcher l'envoi du formulaire classique
+
+                const selectedIds = JSON.parse($('#selectedIds').val()); // Récupérer les IDs du formulaire
+
+                $.ajax({
+                    url: '{{ path('app_contact_bulk_delete') }}',
+                    method: 'POST',
+                    contentType: 'application/json', // S'assurer que les données sont envoyées en JSON
+                    data: JSON.stringify({ ids: selectedIds }), // Convertir les IDs en JSON
+                    success: function (response) {
+                        // Si la suppression a réussi, effectuer la redirection
+                        if (response.success) {
+                            // Remplacer l'URL de la page actuelle par celle de la vue des contacts
+                            window.location.href = '{{ path('app_contact_view') }}';
+                        } else {
+                            // Gérer l'erreur si nécessaire (par exemple, afficher un message d'erreur)
+                            alert('Erreur : ' + response.error);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Gérer les erreurs AJAX (par exemple, une erreur 500)
+                        alert('Une erreur est survenue lors de la suppression : ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+
+    {# Script pour activer le tooltip #}
+    <script>
+        $(document).ready(function () {
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+        });
+    </script>
+{% endblock %}

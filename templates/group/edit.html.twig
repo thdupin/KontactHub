@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% form_theme form 'bootstrap_5_layout.html.twig' %}
+
+{% block title %}Modifier le groupe{% endblock %}
+
+{% block body %}
+    <h1>Modifier le groupe</h1>
+
+    {{ form_start(form) }}
+        {{ form_row(form.name, {'attr': {'placeholder': 'Entrez le nom du groupe'}}) }}
+        <button type="submit" class="btn btn-primary mt-3">Enregistrer les modifications</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_group') }}" class="btn btn-secondary mt-3">Retour à la liste</a>
+{% endblock %}

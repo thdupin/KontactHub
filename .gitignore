@@ -1,0 +1,50 @@
+###> symfony/framework-bundle ###
+/.env
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+# Fichiers IDE
+.idea/
+/.vscode/
+
+# Fichiers de configuration spécifiques à l'IDE
+/.idea/
+/*.iml
+/.vscode/
+
+# Composer
+composer.phar
+composer.lock
+
+# PHPUnit
+phpunit.xml
+phpunit.xml.dist
+
+# Fichiers générés par les logs
+/var/log/
+/var/cache/
+
+# Fichiers de cache
+/var/cache/*
+
+# Cache du profiler Symfony
+/.sfprofiler/
+
+# Fichiers générés par Symfony
+/public/build/
+!public/uploads/photos/
+public/uploads/*
+/public/bundles/
+
+# Secrets Symfony
+/config/secrets/
+
+# Autres fichiers ignorés
+.DS_Store
+Thumbs.db

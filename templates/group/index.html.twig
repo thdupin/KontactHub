@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste de groupes</h1>
+    <div class="d-flex align-items-center mt-4">
+        <input id="search-group" class="form-control mr-sm-2 me-4" type="search" placeholder="Rechercher un groupe..." aria-label="Search">
+    </div>
+    <div class="table-container">
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Nombre de personnes associées</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="group-list">
+                {% for group in groups %}
+                <tr class="group-item">
+                    <td class="align-middle">{{ group.name|capitalize }}</td>
+                    <td class="align-middle">{{ group.contacts|length }}</td>
+                    <td class="align-middle">
+                        <a href="{{ path('app_group_edit', { id: group.id }) }}" class="btn btn-outline-primary me-1" type="button">
+                            <span class="material-symbols-outlined fs-6">edit</span>
+                        </a>
+                    </td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="100%" class="text-center">Aucun groupe trouvé.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    {# Pagination #}
+    <div id="pagination" class="pagination-container">
+        <button class="prev-button btn btn-outline-primary d-flex align-items-center justify-content-center" disabled>
+            <span class="material-symbols-outlined">arrow_left</span>
+        </button>
+        <span id="page-number"></span>
+        <button class="next-button btn btn-outline-primary d-flex align-items-center justify-content-center">
+            <span class="material-symbols-outlined">arrow_right</span>
+        </button>
+    </div>
+
+    {# Recherche et pagination #}
+    <script>
+        $(document).ready(function() {
+            const itemsPerPage = 10;  // Nombre de groupes par page
+            let currentPage = 1;
+            let filteredGroups = $(".group-item").toArray();  // Récupère tous les groupes
+
+            // Fonction pour afficher une page
+            function showPage(pageNumber) {
+                const startIndex = (pageNumber - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+
+                // Masquer tous les groupes
+                $(".group-item").hide();
+
+                // Montrer les groupes correspondant à la page
+                const groupsToShow = filteredGroups.slice(startIndex, endIndex);
+                groupsToShow.forEach(function(group) {
+                    $(group).show();
+                });
+
+                // Mettre à jour le numéro de page
+                $("#page-number").text("Page " + pageNumber);
+
+                // Activer/Désactiver les boutons de pagination
+                if (pageNumber === 1) {
+                    $(".prev-button").prop("disabled", true);
+                } else {
+                    $(".prev-button").prop("disabled", false);
+                }
+
+                if (pageNumber * itemsPerPage >= filteredGroups.length) {
+                    $(".next-button").prop("disabled", true);
+                } else {
+                    $(".next-button").prop("disabled", false);
+                }
+            }
+
+            // Fonction pour effectuer la recherche
+            $("#search-group").on("keyup", function() {
+                const searchValue = $(this).val().toLowerCase();
+                
+                filteredGroups = [];
+
+                // Filtrer tous les groupes
+                $(".group-item").each(function() {
+                    const groupText = $(this).text().toLowerCase();
+                    if (groupText.indexOf(searchValue) > -1) {
+                        filteredGroups.push(this);
+                    }
+                });
+
+                // Réinitialiser la pagination et afficher la première page
+                currentPage = 1;
+                showPage(currentPage);
+            });
+
+            // Actions de pagination
+            $(".prev-button").click(function() {
+                if (currentPage > 1) {
+                    currentPage--;
+                    showPage(currentPage);
+                }
+            });
+
+            $(".next-button").click(function() {
+                if (currentPage * itemsPerPage < filteredGroups.length) {
+                    currentPage++;
+                    showPage(currentPage);
+                }
+            });
+
+            // Initialisation avec tous les groupes affichés
+            showPage(currentPage);
+        });
+    </script>
+{% endblock %}

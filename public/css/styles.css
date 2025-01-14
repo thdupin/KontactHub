@@ -1,0 +1,164 @@
+/* Style global pour les notifications */
+#flash-container {
+    position: fixed;
+    top: 80px;
+    z-index: 1050;  /* S'assurer que le conteneur est au-dessus des autres éléments */
+}
+
+#flash-container .alert {
+    margin-bottom: 10px;  /* Espacement entre les alertes */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    opacity: 0;
+    animation: fadeInOut 5s forwards;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    10% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    90% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+}
+
+
+/* Pagination */
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.pagination-container button {
+    padding: 5px 10px;
+    margin: 0 10px;
+}
+
+.pagination-container span {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+/* Table des contacts */
+th {
+    white-space: nowrap; /* Empêche le texte de se plier à la ligne */
+    padding: 12px; /* Ajoute de l'espace autour du texte */
+    text-align: left; /* Aligne le texte à gauche */
+}
+
+/* Définir une largeur minimale pour chaque cellule d'en-tête */
+th, td {
+    min-width: 150px;
+    padding: 12px;
+}
+
+/* Conteneur du tableau avec défilement horizontal */
+.table-container {
+    overflow-x: auto; /* Active le défilement horizontal si nécessaire */
+}
+
+/* Si vous avez plusieurs champs personnalisés (pour gérer les th dynamiques) */
+th {
+    white-space: nowrap; /* Empêche le texte de se plier à la ligne */
+    padding: 16px 20px !important; /* Augmente l'espace autour du texte dans les en-têtes */
+    text-align: left; /* Aligne le texte à gauche */
+    background-color: #f4f4f4; /* Optionnel: Ajoute une couleur de fond pour l'en-tête */
+    font-weight: 600; /* Rends le texte de l'en-tête plus bold */
+    border: 1px solid #ddd;
+}
+
+/* Le tableau lui-même peut prendre toute la largeur */
+table {
+    width: 100%;
+    table-layout: auto; /* Autorise les colonnes à s'ajuster automatiquement */
+    border-collapse: separate; /* Sépare les bordures des cellules pour appliquer le border-spacing */
+    border-spacing: 8px; /* Ajoute un espacement entre les colonnes du tableau */
+}
+
+/* Appliquer le style au tableau */
+#contact-list {
+    table-layout: auto; /* Permet aux colonnes de s'adapter à leur contenu */
+    width: 100%; /* Le tableau occupera toute la largeur disponible */
+    border-collapse: separate; /* Sépare les bordures des cellules pour appliquer le border-spacing */
+    border-spacing: 8px; /* Ajoute un espacement entre les colonnes */
+}
+
+/* Pour garantir que chaque cellule prend la largeur de son contenu */
+#contact-list td {
+    white-space: nowrap; /* Empêche le texte de se casser sur plusieurs lignes */
+    overflow: hidden; /* Cache le texte qui déborde */
+    text-overflow: ellipsis; /* Affiche "..." lorsque le texte est trop long */
+    padding: 16px 20px !important; /* Ajoute un peu d'espace autour du texte dans les cellules */
+}
+
+/* Si vous utilisez Flexbox pour les images et autres éléments dans les cellules */
+#contact-list td .d-flex {
+    display: flex;
+    align-items: center; /* Alignement vertical centré pour les éléments à l'intérieur */
+}
+
+/* Pour assurer un espacement uniforme entre les éléments dans une cellule */
+#contact-list td .ms-2 {
+    margin-left: 10px; /* Espace entre l'image et le texte */
+}
+
+/* Si vous voulez que les images aient une largeur et une hauteur égales */
+#contact-list td img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%; /* Pour avoir des images circulaires */
+}
+
+
+/* Menu */
+/* Rendre l'icône hamburger blanche */
+.navbar .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.navbar .navbar-toggler {
+    border-width: 2px;
+}
+
+
+/* Bulk Delete */
+#selection-container .badge,
+#selection-container .btn {
+    height: 38px; /* Hauteur uniforme pour le badge et le bouton */
+    display: flex;
+    align-items: center; /* Centre le contenu verticalement */
+}
+
+
+/* Tooltip */
+.tooltip-inner {
+    text-align: left !important; /* Centre le texte horizontalement */
+    padding: 10px; /* Ajoute un peu d'espace autour du contenu */
+    max-width: 500px !important;
+    white-space: normal; /* Permet au texte de s'étendre sur plusieurs lignes si nécessaire */
+}
+
+/* Supprimer les marges et paddings par défaut des éléments de la liste */
+.tooltip-inner ul {
+    list-style-type: disc; /* Remet les puces si vous en voulez, sinon utilisez 'none' */
+    padding-left: 20px; /* Ajoute un peu d'espace à gauche pour décaler les puces */
+    margin: 0; /* Enlève la marge de la liste */
+}
+
+/* Retirer les marges et espacements supplémentaires des éléments li */
+.tooltip-inner li {
+    margin-bottom: 5px; /* Garde un petit espace sous chaque élément */
+    padding-left: 0; /* Enlève le padding à gauche des éléments li */
+}
